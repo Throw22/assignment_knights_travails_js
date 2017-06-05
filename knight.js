@@ -40,9 +40,13 @@ class MoveTree {
     if (newX > 8 || newX < 1 || newY > 8 || newY < 1) {
       return false;
     }
-    if(parent.parent !== null && parent.parent.x === newX && parent.parent.y === newY){
+    if (
+      parent.parent !== null &&
+      parent.parent.x === newX &&
+      parent.parent.y === newY
+    ) {
       // console.log("cyclical",parent.parent.x, newX, parent.parent.y,newY)
-      return false
+      return false;
     }
     return true;
   }
@@ -106,9 +110,6 @@ class MoveTree {
   }
 }
 
-let MT = new MoveTree([4, 4], 6);
-MT.inspect();
-
 class KnightSearcher {
   constructor(tree) {
     this.tree = tree;
@@ -122,7 +123,7 @@ class KnightSearcher {
       if (child.x === tC[0] && child.y === tC[1]) {
         let pathArr = this.getPath(child);
         pathArr.unshift([rootNode.x, rootNode.y]);
-        return {moves: pathArr.length - 1, coords: pathArr};
+        return { moves: pathArr.length - 1, coords: pathArr };
       }
       queue = queue.concat(child.children);
     }
@@ -140,29 +141,41 @@ class KnightSearcher {
     }
     return pathArr;
   }
-  dfsFor(tC, cN = this.tree.start, foundSolution = false) {
+
+  dfsFor(tarCoord, currNode = this.tree.start) {
     let rootNode = this.tree.start;
-    if (cN.children.length && !foundSolution) {
-      for (let i = 0; i < cN.children.length; i++) {
-        if (cN.children[i].x === tC[0] && cN.children[i].y === tC[1]) {
-          let pathArr = this.getPath(cN.children[i]);
+    let solution;
+
+    if (currNode.children.length) {
+      for (let i = 0; i < currNode.children.length; i++) {
+        if (
+          currNode.children[i].x === tarCoord[0] &&
+          currNode.children[i].y === tarCoord[1]
+        ) {
+          let pathArr = this.getPath(currNode.children[i]);
           pathArr.unshift([rootNode.x, rootNode.y]);
-          foundSolution = true;
-          return {
-            moves:
-            pathArr.length - 1,
-            coords:
-            pathArr
+
+          solution = {
+            moves: pathArr.length - 1,
+            coords: pathArr
+          };
+          break;
+        } else {
+          solution = this.dfsFor(tarCoord, currNode.children[i]);
+          if (solution) {
+            return solution;
           }
-        } else if (!foundSolution) {
-          this.dfsFor(tC, cN.children[i], foundSolution);
         }
       }
     }
+    return solution;
   }
 
   benchmark() {}
 }
+
+let MT = new MoveTree([4, 4], 6);
+MT.inspect();
 
 const KS = new KnightSearcher(MT);
 
@@ -171,44 +184,37 @@ const KS = new KnightSearcher(MT);
 // 6 5
 // 8 4
 
-console.log(KS.bfsFor([4, 6]))
-console.log(KS.bfsFor([4, 6]))
-console.log(KS.bfsFor([4, 6]))
-console.log(KS.bfsFor([4, 6]))
-console.log(KS.bfsFor([4, 6]))
-console.log(KS.bfsFor([4, 6]))
-console.log(KS.bfsFor([4, 6]))
-console.log(KS.bfsFor([4, 6]))
-console.log(KS.bfsFor([4, 6]))
-console.log(KS.bfsFor([4, 6]))
+//console.log(KS.bfsFor([4, 6]));
+
+console.log(KS.dfsFor([4, 6]));
 
 //4 4
 // 2 5
 // 4 6
 
 const ms = () => {
-  let d = new Date
-  let m = d.getMilliseconds()
-  return m
-}
+  let d = new Date();
+  let m = d.getMilliseconds();
+  return m;
+};
 
 const benchDfs = () => {
-  let start = ms()
-  for(let i=0; i<6000; i++) {
+  let start = ms();
+  for (let i = 0; i < 6000; i++) {
     KS.dfsFor([8, 4]);
   }
-  let end = ms()
-  return `${end-start} ms`
-}
+  let end = ms();
+  return `${end - start} ms`;
+};
 
 const benchBfs = () => {
-  let start = ms()
-  for(let i=0; i<3; i++) {
+  let start = ms();
+  for (let i = 0; i < 3; i++) {
     KS.bfsFor([8, 4]);
   }
-  let end = ms()
-  return `${end-start} ms`
-}
+  let end = ms();
+  return `${end - start} ms`;
+};
 
-console.log(benchDfs())
-console.log(benchBfs())
+// console.log(benchDfs());
+// console.log(benchBfs());
