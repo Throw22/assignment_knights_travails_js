@@ -38,6 +38,7 @@ class MoveTree {
       );
       //  currentNode =
       //  }
+      //For each of the children,
 
       currentNode.children.forEach(child => {});
     }
