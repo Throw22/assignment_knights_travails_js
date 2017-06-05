@@ -28,18 +28,66 @@ class MoveTree {
   }
 
   addMove(currentNode, i = 1) {
-    currentNode.children.push([
-      new Move(currentNode.x + 2, currentNode.y + 1, i, [], currentNode),
-      new Move(currentNode.x + 2, currentNode.y - 1, i, [], currentNode),
-      new Move(currentNode.x + 1, currentNode.y + 2, i, [], currentNode),
-      new Move(currentNode.x - 1, currentNode.y + 2, i, [], currentNode),
-      new Move(currentNode.x - 2, currentNode.y + 1, i, [], currentNode),
-      new Move(currentNode.x - 2, currentNode.y - 1, i, [], currentNode),
-      new Move(currentNode.x + 1, currentNode.y - 2, i, [], currentNode),
-      new Move(currentNode.x - 1, currentNode.y - 2, i, [], currentNode),
-    ]);
+    currentNode.children.push(this.createMoves(currentNode));
     this.counter += 8;
     return currentNode.children;
+  }
+
+  validateMove(parent, x, y) {
+    newX = parent.x + x;
+    newY = parent.y + y;
+
+    if (newX > 8 || newX < 1 || newY > 8 || newY < 1) {
+      return false;
+    }
+    return true;
+  }
+
+  createMoves(parent) {
+    let moves = [];
+
+    if (this.validateMove(parent, 1, 2)) {
+      moves.push(
+        new Move(parent.x + 1, parent.y + 2, parent.depth + 1, [], parent)
+      );
+    }
+    if (this.validateMove(parent, -1, 2)) {
+      moves.push(
+        new Move(parent.x - 1, parent.y + 2, parent.depth + 1, [], parent)
+      );
+    }
+    if (this.validateMove(parent, 2, 1)) {
+      moves.push(
+        new Move(parent.x + 2, parent.y + 1, parent.depth + 1, [], parent)
+      );
+    }
+    if (this.validateMove(parent, 2, -1)) {
+      moves.push(
+        new Move(parent.x + 2, parent.y - 1, parent.depth + 1, [], parent)
+      );
+    }
+    if (this.validateMove(parent, -2, 1)) {
+      moves.push(
+        new Move(parent.x - 2, parent.y + 1, parent.depth + 1, [], parent)
+      );
+    }
+    if (this.validateMove(parent, -2, -1)) {
+      moves.push(
+        new Move(parent.x - 2, parent.y - 1, parent.depth + 1, [], parent)
+      );
+    }
+    if (this.validateMove(parent, -2, 1)) {
+      moves.push(
+        new Move(parent.x - 2, parent.y + 1, parent.depth + 1, [], parent)
+      );
+    }
+    if (this.validateMove(parent, -2, -1)) {
+      moves.push(
+        new Move(parent.x - 2, parent.y - 1, parent.depth + 1, [], parent)
+      );
+    }
+
+    return moves;
   }
 
   inspect() {
