@@ -48,4 +48,13 @@ Check data for match
 If no match, loop through edge list again
 
 
+1 [2]
+2 [4,5]
+3
+4 []
+5
+
+
 Searching the same graph using BFS.
+
+similar to tree, except the next array of search will contain x vertices then the iteration will find all the edges for those x vertices
