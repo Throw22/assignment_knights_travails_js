@@ -21,6 +21,7 @@ class MoveTree {
     for (let i = 1; i < maxDepth; i++) {
       let currentChildren = [];
       children.forEach(child => {
+        console.log(child);
         currentChildren.push(this.addMove(child, i));
       });
       children = currentChildren;
@@ -48,42 +49,42 @@ class MoveTree {
 
     if (this.validateMove(parent, 1, 2)) {
       moves.push(
-        new Move(parent.x + 1, parent.y + 2, parent.depth + 1, [], parent)
+        new Move(parent.x + 1, parent.y + 2, parent.depth + 1, [], parent),
       );
     }
     if (this.validateMove(parent, -1, 2)) {
       moves.push(
-        new Move(parent.x - 1, parent.y + 2, parent.depth + 1, [], parent)
+        new Move(parent.x - 1, parent.y + 2, parent.depth + 1, [], parent),
       );
     }
     if (this.validateMove(parent, 2, 1)) {
       moves.push(
-        new Move(parent.x + 2, parent.y + 1, parent.depth + 1, [], parent)
+        new Move(parent.x + 2, parent.y + 1, parent.depth + 1, [], parent),
       );
     }
     if (this.validateMove(parent, 2, -1)) {
       moves.push(
-        new Move(parent.x + 2, parent.y - 1, parent.depth + 1, [], parent)
+        new Move(parent.x + 2, parent.y - 1, parent.depth + 1, [], parent),
       );
     }
     if (this.validateMove(parent, -2, 1)) {
       moves.push(
-        new Move(parent.x - 2, parent.y + 1, parent.depth + 1, [], parent)
+        new Move(parent.x - 2, parent.y + 1, parent.depth + 1, [], parent),
       );
     }
     if (this.validateMove(parent, -2, -1)) {
       moves.push(
-        new Move(parent.x - 2, parent.y - 1, parent.depth + 1, [], parent)
+        new Move(parent.x - 2, parent.y - 1, parent.depth + 1, [], parent),
       );
     }
     if (this.validateMove(parent, -2, 1)) {
       moves.push(
-        new Move(parent.x - 2, parent.y + 1, parent.depth + 1, [], parent)
+        new Move(parent.x - 2, parent.y + 1, parent.depth + 1, [], parent),
       );
     }
     if (this.validateMove(parent, -2, -1)) {
       moves.push(
-        new Move(parent.x - 2, parent.y - 1, parent.depth + 1, [], parent)
+        new Move(parent.x - 2, parent.y - 1, parent.depth + 1, [], parent),
       );
     }
 
