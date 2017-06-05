@@ -50,49 +50,49 @@ class MoveTree {
       moves.push(
         new Move(parent.x + 1, parent.y + 2, parent.depth + 1, [], parent)
       );
-      this.counter +=1
+      this.counter += 1;
     }
     if (this.validateMove(parent, -1, 2)) {
       moves.push(
         new Move(parent.x - 1, parent.y + 2, parent.depth + 1, [], parent)
       );
-      this.counter +=1
+      this.counter += 1;
     }
     if (this.validateMove(parent, 2, 1)) {
       moves.push(
         new Move(parent.x + 2, parent.y + 1, parent.depth + 1, [], parent)
       );
-      this.counter +=1
+      this.counter += 1;
     }
     if (this.validateMove(parent, 2, -1)) {
       moves.push(
         new Move(parent.x + 2, parent.y - 1, parent.depth + 1, [], parent)
       );
-      this.counter +=1
+      this.counter += 1;
     }
     if (this.validateMove(parent, -2, 1)) {
       moves.push(
         new Move(parent.x - 2, parent.y + 1, parent.depth + 1, [], parent)
       );
-      this.counter +=1
+      this.counter += 1;
     }
     if (this.validateMove(parent, -2, -1)) {
       moves.push(
         new Move(parent.x - 2, parent.y - 1, parent.depth + 1, [], parent)
       );
-      this.counter +=1
+      this.counter += 1;
     }
     if (this.validateMove(parent, -2, 1)) {
       moves.push(
         new Move(parent.x - 2, parent.y + 1, parent.depth + 1, [], parent)
       );
-      this.counter +=1
+      this.counter += 1;
     }
     if (this.validateMove(parent, -2, -1)) {
       moves.push(
         new Move(parent.x - 2, parent.y - 1, parent.depth + 1, [], parent)
       );
-      this.counter +=1
+      this.counter += 1;
     }
     return moves;
   }
@@ -102,24 +102,82 @@ class MoveTree {
   }
 }
 
-let MT = new MoveTree([4, 4], 4);
+let MT = new MoveTree([4, 4], 3);
 MT.inspect();
 
 class KnightSearcher {
   constructor(tree) {
-    this.tree = tree
+    this.tree = tree;
   }
 
   bfsFor(tC) {
-    let rootNode = this.tree.start
-    let children = rootNode.children
-    children.forEach(child => {
+    let rootNode = this.tree.start;
+    let queue = rootNode.children;
+
+    while (queue.length > 0) {
+      let child = queue.shift();
+
       if (child.x === tC[0] && child.y === tC[1]) {
-        return child
+        let pathArr = this.getPath(child);
+        pathArr.unshift([rootNode.x, rootNode.y]);
+        return console.log(pathArr.length - 1, 'Moves:', pathArr);
       }
-      children = children.concat(child.children)
-    })
+
+      queue = queue.concat(child.children);
+    }
+
+    return console.log(
+      'No possible move found for provided coordinates and tree'
+    );
   }
+
+  getPath(child) {
+    let pathArr = [];
+    let currentMove = child;
+
+    while (currentMove.parent) {
+      pathArr.unshift([currentMove.x, currentMove.y]);
+      currentMove = currentMove.parent;
+    }
+
+    return pathArr;
+  }
+
+  dfsFor(tC, cN = this.tree.start, foundSolution = false) {
+    let rootNode = this.tree.start;
+
+    if (cN.children.length && !foundSolution) {
+      for (let i = 0; i < cN.children.length; i++) {
+        if (cN.children[i].x === tC[0] && cN.children[i].y === tC[1]) {
+          let pathArr = this.getPath(cN.children[i]);
+          pathArr.unshift([rootNode.x, rootNode.y]);
+          foundSolution = true;
+          return console.log(
+            'DepthFirst:',
+            pathArr.length - 1,
+            'Moves:',
+            pathArr
+          );
+        } else if (!foundSolution) {
+          this.dfsFor(tC, cN.children[i], foundSolution);
+        }
+      }
+    }
+  }
+
+  benchmark() {}
 }
 
-const KS = new KnightSearcher(MT)
+const KS = new KnightSearcher(MT);
+
+//KS.bfsFor([8, 4]);
+//4 4
+// 6 5
+// 8 4
+
+//KS.bfsFor([4, 6]);
+//4 4
+// 2 5
+// 4 6
+
+KS.dfsFor([8, 4]);
