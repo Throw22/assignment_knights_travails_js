@@ -21,23 +21,15 @@ class MoveTree {
 
     for (let i = 1; i < maxDepth; i++) {
       let currentChildren = [];
-      console.log("Call of 'children'", children, 'Current i:', i);
       children.forEach(child => {
-        //console.log('Current children inside child forEach:', child.children);
-
-        //***CONCATENATION IS LEADING TO BLANK ARRAY
-        currentChildren.concat(this.addMove(child, i));
-        //console.log('Current children after moves added:', child.children);
-        //console.log('Child.children:', child.children);
+        currentChildren = currentChildren.concat(this.addMove(child, i));
       });
       children = currentChildren;
     }
   }
 
   addMove(currentNode, i = 1) {
-    console.log('i:', i, 'Current node children:', currentNode.children);
     currentNode.children = this.createMoves(currentNode);
-    //this.counter += 8;
     return currentNode.children;
   }
 
@@ -58,43 +50,50 @@ class MoveTree {
       moves.push(
         new Move(parent.x + 1, parent.y + 2, parent.depth + 1, [], parent)
       );
+      this.counter +=1
     }
     if (this.validateMove(parent, -1, 2)) {
       moves.push(
         new Move(parent.x - 1, parent.y + 2, parent.depth + 1, [], parent)
       );
+      this.counter +=1
     }
     if (this.validateMove(parent, 2, 1)) {
       moves.push(
         new Move(parent.x + 2, parent.y + 1, parent.depth + 1, [], parent)
       );
+      this.counter +=1
     }
     if (this.validateMove(parent, 2, -1)) {
       moves.push(
         new Move(parent.x + 2, parent.y - 1, parent.depth + 1, [], parent)
       );
+      this.counter +=1
     }
     if (this.validateMove(parent, -2, 1)) {
       moves.push(
         new Move(parent.x - 2, parent.y + 1, parent.depth + 1, [], parent)
       );
+      this.counter +=1
     }
     if (this.validateMove(parent, -2, -1)) {
       moves.push(
         new Move(parent.x - 2, parent.y - 1, parent.depth + 1, [], parent)
       );
+      this.counter +=1
     }
     if (this.validateMove(parent, -2, 1)) {
       moves.push(
         new Move(parent.x - 2, parent.y + 1, parent.depth + 1, [], parent)
       );
+      this.counter +=1
     }
     if (this.validateMove(parent, -2, -1)) {
       moves.push(
         new Move(parent.x - 2, parent.y - 1, parent.depth + 1, [], parent)
       );
+      this.counter +=1
     }
-    //add moves length to counter
     return moves;
   }
 
@@ -106,13 +105,21 @@ class MoveTree {
 let MT = new MoveTree([4, 4], 4);
 MT.inspect();
 
-// class KnightSearcher {
-//   constructor(tree) {
-//     this.tree = tree
-//   }
-//
-//   bfsFor(targetCoords) {
-//     let cursor = this.tree
-//     if(cursor.children)
-//   }
-// }
+class KnightSearcher {
+  constructor(tree) {
+    this.tree = tree
+  }
+
+  bfsFor(tC) {
+    let rootNode = this.tree.start
+    let children = rootNode.children
+    children.forEach(child => {
+      if (child.x === tC[0] && child.y === tC[1]) {
+        return child
+      }
+      children = children.concat(child.children)
+    })
+  }
+}
+
+const KS = new KnightSearcher(MT)
