@@ -18,25 +18,32 @@ class MoveTree {
 
   buildTree(start, maxDepth) {
     let children = this.addMove(this.start);
+
     for (let i = 1; i < maxDepth; i++) {
       let currentChildren = [];
+      console.log("Call of 'children'", children, 'Current i:', i);
       children.forEach(child => {
-        console.log(child);
-        currentChildren.push(this.addMove(child, i));
+        //console.log('Current children inside child forEach:', child.children);
+
+        //***CONCATENATION IS LEADING TO BLANK ARRAY
+        currentChildren.concat(this.addMove(child, i));
+        //console.log('Current children after moves added:', child.children);
+        //console.log('Child.children:', child.children);
       });
       children = currentChildren;
     }
   }
 
   addMove(currentNode, i = 1) {
-    currentNode.children.push(this.createMoves(currentNode));
-    this.counter += 8;
+    console.log('i:', i, 'Current node children:', currentNode.children);
+    currentNode.children = this.createMoves(currentNode);
+    //this.counter += 8;
     return currentNode.children;
   }
 
   validateMove(parent, x, y) {
-    newX = parent.x + x;
-    newY = parent.y + y;
+    let newX = parent.x + x;
+    let newY = parent.y + y;
 
     if (newX > 8 || newX < 1 || newY > 8 || newY < 1) {
       return false;
@@ -49,45 +56,45 @@ class MoveTree {
 
     if (this.validateMove(parent, 1, 2)) {
       moves.push(
-        new Move(parent.x + 1, parent.y + 2, parent.depth + 1, [], parent),
+        new Move(parent.x + 1, parent.y + 2, parent.depth + 1, [], parent)
       );
     }
     if (this.validateMove(parent, -1, 2)) {
       moves.push(
-        new Move(parent.x - 1, parent.y + 2, parent.depth + 1, [], parent),
+        new Move(parent.x - 1, parent.y + 2, parent.depth + 1, [], parent)
       );
     }
     if (this.validateMove(parent, 2, 1)) {
       moves.push(
-        new Move(parent.x + 2, parent.y + 1, parent.depth + 1, [], parent),
+        new Move(parent.x + 2, parent.y + 1, parent.depth + 1, [], parent)
       );
     }
     if (this.validateMove(parent, 2, -1)) {
       moves.push(
-        new Move(parent.x + 2, parent.y - 1, parent.depth + 1, [], parent),
+        new Move(parent.x + 2, parent.y - 1, parent.depth + 1, [], parent)
       );
     }
     if (this.validateMove(parent, -2, 1)) {
       moves.push(
-        new Move(parent.x - 2, parent.y + 1, parent.depth + 1, [], parent),
+        new Move(parent.x - 2, parent.y + 1, parent.depth + 1, [], parent)
       );
     }
     if (this.validateMove(parent, -2, -1)) {
       moves.push(
-        new Move(parent.x - 2, parent.y - 1, parent.depth + 1, [], parent),
+        new Move(parent.x - 2, parent.y - 1, parent.depth + 1, [], parent)
       );
     }
     if (this.validateMove(parent, -2, 1)) {
       moves.push(
-        new Move(parent.x - 2, parent.y + 1, parent.depth + 1, [], parent),
+        new Move(parent.x - 2, parent.y + 1, parent.depth + 1, [], parent)
       );
     }
     if (this.validateMove(parent, -2, -1)) {
       moves.push(
-        new Move(parent.x - 2, parent.y - 1, parent.depth + 1, [], parent),
+        new Move(parent.x - 2, parent.y - 1, parent.depth + 1, [], parent)
       );
     }
-
+    //add moves length to counter
     return moves;
   }
 
@@ -96,7 +103,7 @@ class MoveTree {
   }
 }
 
-let MT = new MoveTree([1, 2], 2);
+let MT = new MoveTree([4, 4], 4);
 MT.inspect();
 
 // class KnightSearcher {
