@@ -16,42 +16,39 @@ class MoveTree {
     this.buildTree(start, maxDepth);
   }
 
-  // Given starting location and depth
-  // Add 8 moves to node based off given location
-  //
-
   buildTree(start, maxDepth) {
-    let currentNode = this.start;
-
-    if (!currentNode.children.length) {
-      // for (let i = 1; i <= maxDepth; i++) {
-      //this.counter += 8;
-      currentNode.children.push(
-        new Move(currentNode.x + 2, currentNode.y + 1, i, [], currentNode),
-        new Move(currentNode.x + 2, currentNode.y - 1, i, [], currentNode),
-        new Move(currentNode.x + 1, currentNode.y + 2, i, [], currentNode),
-        new Move(currentNode.x - 1, currentNode.y + 2, i, [], currentNode),
-        new Move(currentNode.x - 2, currentNode.y + 1, i, [], currentNode),
-        new Move(currentNode.x - 2, currentNode.y - 1, i, [], currentNode),
-        new Move(currentNode.x + 1, currentNode.y - 2, i, [], currentNode),
-        new Move(currentNode.x - 1, currentNode.y - 2, i, [], currentNode)
-      );
-      //  currentNode =
-      //  }
-      //For each of the children,
-
-      currentNode.children.forEach(child => {});
+    let children = this.addMove(this.start);
+    for (let i = 1; i < maxDepth; i++) {
+      let currentChildren = [];
+      children.forEach(child => {
+        currentChildren.push(this.addMove(child, i));
+      });
+      children = currentChildren;
     }
   }
 
-  // addMove() {
-  //
-  // }
+  addMove(currentNode, i = 1) {
+    currentNode.children.push([
+      new Move(currentNode.x + 2, currentNode.y + 1, i, [], currentNode),
+      new Move(currentNode.x + 2, currentNode.y - 1, i, [], currentNode),
+      new Move(currentNode.x + 1, currentNode.y + 2, i, [], currentNode),
+      new Move(currentNode.x - 1, currentNode.y + 2, i, [], currentNode),
+      new Move(currentNode.x - 2, currentNode.y + 1, i, [], currentNode),
+      new Move(currentNode.x - 2, currentNode.y - 1, i, [], currentNode),
+      new Move(currentNode.x + 1, currentNode.y - 2, i, [], currentNode),
+      new Move(currentNode.x - 1, currentNode.y - 2, i, [], currentNode),
+    ]);
+    this.counter += 8;
+    return currentNode.children;
+  }
 
   inspect() {
     console.log('maxDepth', this.maxDepth, '# nodes', this.counter);
   }
 }
+
+let MT = new MoveTree([1, 2], 2);
+MT.inspect();
 
 // class KnightSearcher {
 //   constructor(tree) {
