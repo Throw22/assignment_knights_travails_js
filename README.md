@@ -1,2 +1,8 @@
 # assignment_knights_travails_js
 Do not go gentle into that good knight.
+
+What data structure is used to implement DFS?
+What data structure is typically used to implement BFS?
+Which one can be done recursively? (the clue should be the data structure)
+Which one would you use to print a list of all the nodes in a tree or graph, starting with depth 1, then depth 2, then depth 3 etc.?
+What is the difference between a tree and a graph?
